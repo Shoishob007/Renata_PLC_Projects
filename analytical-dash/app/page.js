@@ -1,7 +1,7 @@
-import Page from "./dashboard/page";
+import Dashboard from "./dashboard/page";
 
 export default function Home() {
   return (
-    <Page />
+    <Dashboard />
   );
 }
