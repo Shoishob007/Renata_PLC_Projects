@@ -16,7 +16,10 @@ export async function registerUser({ email, name, password, image_url, role_id }
       VALUES (?, ?, ?, ?, ?)
     `).run(email, name, hashedPassword, image_url || null, role_id);
 
-    return { id: result.lastInsertRowid, email, name, role_id, image_url };
+    const role = db.prepare(`SELECT name FROM roles WHERE id = ?`).get(role_id);
+
+
+    return { id: result.lastInsertRowid, email, name, role_id, role: role?.name, image_url };
   } catch (error) {
     throw new Error(error.message);
   }
@@ -47,15 +50,16 @@ export async function loginUser(email, password) {
   };
 }
 
-export function getCurrentUser() {
-    const cookieStore = cookies();
-    const userCookie = cookieStore.get('user');
+export async function getCurrentUser() {
+  const cookieStore = await cookies();
+  const userCookie = cookieStore.get('user');
 
-    if (!userCookie) return null;
-    return JSON.parse(userCookie.value);
+  if (!userCookie) return null;
+  return JSON.parse(userCookie.value);
 }
 
 //logout user
-export function logoutUser() {
-    cookies().delete('user');
+export async function logoutUser() {
+  const cookieStore = await cookies();
+  cookieStore.delete('user');
 }

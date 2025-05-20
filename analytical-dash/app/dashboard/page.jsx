@@ -1,4 +1,8 @@
-'use client'
+"use client";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import CustomersTable from "./CustomeTable";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
@@ -14,9 +18,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
@@ -24,13 +25,17 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login");
+      router.replace("/login");
     }
   }, [user, loading, router]);
 
-  if (loading || !user) return <div>Loading...</div>;
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
 
-  console.log("user ::", user)
+  if (!user) {
+    return null;
+  }
 
   return (
     <SidebarProvider>
@@ -59,12 +64,14 @@ export default function Dashboard() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min">
+          <div className="min-h-[100vh] flex-1 rounded-xl md:min-h-min">
             <h1 className="p-4 text-xl font-semibold">
               Welcome, {user.name || user.email}
             </h1>
             <p className="px-4">Your role: {user.role}</p>
           </div>
+          <h2 className="text-2xl font-bold my-4">Customers</h2>
+          <CustomersTable />
         </div>
       </SidebarInset>
     </SidebarProvider>

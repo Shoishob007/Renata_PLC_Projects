@@ -7,7 +7,10 @@ export async function POST(request) {
 
     try {
         const user = await loginUser(email, password);
-        cookies().set('user', JSON.stringify(user), { httpOnly: true });
+
+        const cookieStore = await cookies();
+        cookieStore.set('user', JSON.stringify(user), { httpOnly: true });
+
         return NextResponse.json(user);
     } catch (error) {
         return NextResponse.json(

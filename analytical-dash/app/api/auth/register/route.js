@@ -7,8 +7,10 @@ export async function POST(request) {
 
   try {
     const user = await registerUser({ email, name, password, image_url, role_id });
-    cookies().set('user', JSON.stringify(user), { httpOnly: true });
-    return NextResponse.json(user);
+
+    const cookieStore = await cookies();
+
+    cookieStore.set('user', JSON.stringify(user), { httpOnly: true }); return NextResponse.json(user);
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Registration failed' },

@@ -12,19 +12,31 @@ export default function LoginPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (user) router.push("/dashboard");
-  }, [user, router]);
+    if (user && !loading) {
+      router.replace("/dashboard");
+    }
+  }, [user, loading, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Clear previous errors
     try {
       await login(email, password);
+      // Successful login will update the user state and trigger the useEffect redirect
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     }
   };
 
-  if (loading || user) return <div>Loading...</div>;
+  // Only show loading while checking authentication status
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+  
+  // Don't render login form if user is already authenticated
+  if (user) {
+    return null; // This component will unmount as the redirect happens
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
