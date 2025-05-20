@@ -19,23 +19,24 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous errors
+    setError("");
     try {
       await login(email, password);
-      // Successful login will update the user state and trigger the useEffect redirect
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     }
   };
 
-  // Only show loading while checking authentication status
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
   }
-  
-  // Don't render login form if user is already authenticated
+
   if (user) {
-    return null; // This component will unmount as the redirect happens
+    return null;
   }
 
   return (

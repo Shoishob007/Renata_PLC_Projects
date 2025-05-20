@@ -16,23 +16,6 @@ import {
 } from "@/components/ui/dialog";
 import { EllipsisVertical } from "lucide-react";
 
-// function DotsVerticalIcon({ className }) {
-//   return (
-//     <svg
-//       className={className}
-//       width={20}
-//       height={20}
-//       fill="none"
-//       stroke="currentColor"
-//       viewBox="0 0 24 24"
-//     >
-//       <circle cx="12" cy="5" r="1.5" />
-//       <circle cx="12" cy="12" r="1.5" />
-//       <circle cx="12" cy="19" r="1.5" />
-//     </svg>
-//   );
-// }
-
 const emptyCustomer = {
   id: "",
   name: "",

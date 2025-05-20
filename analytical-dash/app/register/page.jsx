@@ -25,7 +25,7 @@ export default function RegisterPage() {
       const res = await fetch("/api/auth/roles");
       const data = await res.json();
       setRoles(data);
-      setFormData(f => ({ ...f, role_id: data[0]?.id ?? "" }));
+      setFormData((f) => ({ ...f, role_id: data[0]?.id ?? "" }));
     };
     fetchRoles();
   }, []);
@@ -177,23 +177,28 @@ export default function RegisterPage() {
               />
             </div>
 
-<div>
-            <label htmlFor="role_id" className="block text-sm font-medium text-gray-700">
-              Role
-            </label>
-            <select
-              id="role_id"
-              name="role_id"
-              className="mt-1 block w-full"
-              value={formData.role_id}
-              onChange={handleChange}
-              required
-            >
-              {roles.map(role => (
-                <option key={role.id} value={role.id}>{role.name}</option>
-              ))}
-            </select>
-          </div>
+            <div>
+              <label
+                htmlFor="role_id"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Role
+              </label>
+              <select
+                id="role_id"
+                name="role_id"
+                className="mt-1 block w-full"
+                value={formData.role_id}
+                onChange={handleChange}
+                required
+              >
+                {roles.map((role) => (
+                  <option key={role.id} value={role.id}>
+                    {role.name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div>

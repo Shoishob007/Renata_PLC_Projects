@@ -1,8 +1,5 @@
 "use client";
-import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import CustomersTable from "./CustomeTable";
+import UsersTable from "../UserTable";
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
@@ -18,9 +15,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/context/AuthContext";
 import { HomeIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-export default function Dashboard() {
+export default function Page() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
@@ -31,7 +31,11 @@ export default function Dashboard() {
   }, [user, loading, router]);
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
   }
 
   if (!user) {
@@ -51,28 +55,26 @@ export default function Dashboard() {
             />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    <HomeIcon className="h-4 w-4" />
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                  <BreadcrumbLink href="/dashboard">
+                    <HomeIcon className="h-4 w-4" />
+                  </BreadcrumbLink>{" "}
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink href="/Users">Users</BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Sales Representatives</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="min-h-[100vh] flex-1 rounded-xl md:min-h-min">
-            <h1 className="p-4 text-xl font-semibold">
-              Welcome, {user.name || user.email}
-            </h1>
-            <p className="px-4">Your role: {user.role}</p>
-          </div>
-          <h2 className="text-2xl font-bold my-4">Customers</h2>
-          <CustomersTable />
+          <h2 className="text-2xl font-bold my-4">Sales Representatives</h2>
+          <UsersTable role="sales" />
         </div>
       </SidebarInset>
     </SidebarProvider>

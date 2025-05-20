@@ -18,13 +18,14 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { useAuth } from "@/context/AuthContext";
 
 // sample data.
 const data = {
   user: {
     name: "Admin",
     email: "admin@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    image_url: "/avatars/shadcn.jpg",
   },
   teams: [
     {
@@ -45,12 +46,6 @@ const data = {
   ],
   navMain: [
     {
-      title: "Data Table",
-      url: "#",
-      icon: Table2,
-      isActive: true,
-    },
-    {
       title: "Charts",
       url: "#",
       icon: ChartArea,
@@ -61,16 +56,16 @@ const data = {
       icon: Users,
       items: [
         {
+          title: "All",
+          url: "/Users",
+        },
+        {
           title: "Admins",
-          url: "#",
+          url: "/Users/Admins",
         },
         {
           title: "Sales Representatives",
-          url: "#",
-        },
-        {
-          title: "Customers",
-          url: "#",
+          url: "/Users/Sales",
         },
       ],
     },
@@ -78,7 +73,7 @@ const data = {
 };
 
 export function AppSidebar({user}) {
-  console.log("User object in app-sidebar :: ", user)
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
