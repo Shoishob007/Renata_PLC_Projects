@@ -74,7 +74,7 @@ export default function Page() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <h2 className="text-2xl font-bold my-4">Sales Representatives</h2>
-          <UsersTable role="sales" />
+          <UsersTable role="sales" user={user}/>
         </div>
       </SidebarInset>
     </SidebarProvider>

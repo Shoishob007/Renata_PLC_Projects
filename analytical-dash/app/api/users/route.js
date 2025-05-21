@@ -33,3 +33,17 @@ export async function DELETE(request) {
   db.prepare('DELETE FROM users WHERE id = ?').run(id);
   return Response.json({ success: true });
 }
+
+//updating roles
+export async function PUT(request) {
+  const { id, role } = await request.json();
+
+  const roleRow = db.prepare(`SELECT id FROM roles WHERE name = ?`).get(role);
+  if (!roleRow) {
+    return new Response(JSON.stringify({ error: "Invalid role" }), { status: 400 });
+  }
+
+  db.prepare('UPDATE users SET role_id = ? WHERE id = ?').run(roleRow.id, id);
+
+  return Response.json({ success: true });
+}

@@ -70,7 +70,7 @@ export default function Page() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <h2 className="text-2xl font-bold my-4">All Users</h2>
-          <UsersTable role={null} />
+          <UsersTable role={null} user={user}/>
         </div>
       </SidebarInset>
     </SidebarProvider>

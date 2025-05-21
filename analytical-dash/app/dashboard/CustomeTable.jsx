@@ -26,7 +26,7 @@ const emptyCustomer = {
   income: "",
 };
 
-export default function CustomersTable() {
+export default function CustomersTable({ user }) {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -119,9 +119,11 @@ export default function CustomersTable() {
               <th className="px-4 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                 Income
               </th>
-              <th className="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
-                Action
-              </th>
+              {user.role !== "user" && (
+                <th className="px-4 py-3 text-center text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  Action
+                </th>
+              )}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -139,31 +141,33 @@ export default function CustomersTable() {
                 <td className="px-4 py-2">
                   {Number(customer.income).toLocaleString()}
                 </td>
-                <td className="px-4 py-2 text-center">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button
-                        className="p-2 rounded-full hover:bg-gray-200 focus:outline-none"
-                        aria-label="Actions"
-                      >
-                        <EllipsisVertical className="w-5 h-5 text-gray-500" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        onClick={() => handleOpenEdit(customer)}
-                      >
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        className="text-red-600"
-                        onClick={() => handleDelete(customer)}
-                      >
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </td>
+                {user.role !== "user" && (
+                  <td className="px-4 py-2 text-center">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button
+                          className="p-2 rounded-full hover:bg-gray-200 focus:outline-none"
+                          aria-label="Actions"
+                        >
+                          <EllipsisVertical className="w-5 h-5 text-gray-500" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() => handleOpenEdit(customer)}
+                        >
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-red-600"
+                          onClick={() => handleDelete(customer)}
+                        >
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
@@ -171,21 +175,23 @@ export default function CustomersTable() {
       </div>
 
       {/* add */}
-      <button
-        className="fixed bottom-8 right-8 bg-blue-600 text-white rounded-full shadow-lg p-4 hover:bg-blue-700 focus:outline-none z-10"
-        onClick={handleOpenAdd}
-        aria-label="Add Customer"
-      >
-        <svg
-          width="28"
-          height="28"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+      {user.role !== "user" && (
+        <button
+          className="fixed bottom-8 right-8 bg-blue-600 text-white rounded-full shadow-lg p-4 hover:bg-blue-700 focus:outline-none z-10"
+          onClick={handleOpenAdd}
+          aria-label="Add Customer"
         >
-          <path d="M12 4v16m8-8H4" strokeWidth="2" strokeLinecap="round" />
-        </svg>
-      </button>
+          <svg
+            width="28"
+            height="28"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M12 4v16m8-8H4" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </button>
+      )}
 
       {/* Dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

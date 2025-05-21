@@ -31,7 +31,11 @@ export default function Dashboard() {
   }, [user, loading, router]);
 
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
   }
 
   if (!user) {
@@ -72,7 +76,7 @@ export default function Dashboard() {
             <p className="px-4">Your role: {user.role}</p>
           </div>
           <h2 className="text-2xl font-bold my-4">Customers</h2>
-          <CustomersTable />
+          <CustomersTable user={user} />
         </div>
       </SidebarInset>
     </SidebarProvider>
