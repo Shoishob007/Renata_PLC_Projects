@@ -1,4 +1,5 @@
 "use client";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   BarChart,
   Bar,
@@ -10,6 +11,13 @@ import {
 } from "recharts";
 
 export default function CustomerIncomeBar({ customers }) {
+  const isMobile = useIsMobile();
+
+  // responsive values
+  const fontSize = isMobile ? 9 : 12;
+  const angle = isMobile ? -30 : 0;
+  const tickMargin = isMobile ? 18 : 8;
+
   // division
   const divisionGroups = customers.reduce((acc, c) => {
     if (!acc[c.division]) acc[c.division] = [];
@@ -29,8 +37,14 @@ export default function CustomerIncomeBar({ customers }) {
       </h3>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
-          <XAxis dataKey="division" interval={0} fontSize={12} />
-          <YAxis fontSize={12} />
+          <XAxis
+            dataKey="division"
+            interval={0}
+            fontSize={fontSize}
+            angle={angle}
+            tickMargin={tickMargin}
+          />
+          <YAxis fontSize={fontSize} />
           <Tooltip />
           <Legend />
           <Bar dataKey="avgIncome" fill="#8884d8" name="Avg Income" />

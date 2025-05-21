@@ -41,8 +41,15 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h1 className="text-2xl font-bold mb-6 text-center">Login</h1>
+      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md space-y-8">
+        <div className="text-center">
+          <h2 className="mt-6 text-3xl font-extrabold text-gray-800">
+            Login
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            Insert your email and password to login
+          </p>
+        </div>
         {error && <div className="text-red-500 mb-4">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -80,7 +87,7 @@ export default function LoginPage() {
         </form>
         <div className="mt-4 text-center">
           Don't have an account? {" "}
-          <a href="/register" className="text-blue-500 hover:underline">
+          <a href="/register" className="text-blue-500">
             Register
           </a>
         </div>

@@ -1,8 +1,17 @@
-import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useState, useEffect } from "react";
 
-export default function CustomerIncomeFilter({ min, max, value, onChange }) {
+export default function CustomerIncomeFilter({ min, max, value, onChange, isMobile: isMobileProp }) {
+  const isMobileHook = useIsMobile();
+  const isMobile = typeof isMobileProp === "boolean" ? isMobileProp : isMobileHook;
+
   const [localMin, setLocalMin] = useState(value[0]);
   const [localMax, setLocalMax] = useState(value[1]);
+
+  useEffect(() => {
+    setLocalMin(value[0]);
+    setLocalMax(value[1]);
+  }, [value[0], value[1]]);
 
   function handleInputChange(e, type) {
     let val = Number(e.target.value.replace(/[^0-9]/g, ""));
@@ -28,41 +37,39 @@ export default function CustomerIncomeFilter({ min, max, value, onChange }) {
     onChange([newMin, newMax]);
   }
 
+  const inputClass =
+    "border rounded px-2 py-1 text-sm transition-all duration-200 " +
+    (isMobile
+      ? "w-20 text-sm"
+      : "w-24 text-sm");
+
   return (
-    <div className="flex items-center gap-2">
-      <input
-        type="number"
-        className="border rounded px-2 py-1 w-24 text-sm"
-        min={min}
-        max={max}
-        value={localMin}
-        onChange={(e) => handleInputChange(e, "min")}
-        onBlur={() => handleBlur("min")}
-        placeholder="Min"
-      />
-      <span className="text-xs text-gray-400">—</span>
-      <input
-        type="number"
-        className="border rounded px-2 py-1 w-24 text-sm"
-        min={min}
-        max={max}
-        value={localMax}
-        onChange={(e) => handleInputChange(e, "max")}
-        onBlur={() => handleBlur("max")}
-        placeholder="Max"
-      />
-      {/* <button
-        className="ml-2 text-sm px-2 py-1 border rounded bg-gray-50 hover:bg-gray-100"
-        type="button"
-        onClick={() => {
-          setLocalMin(min);
-          setLocalMax(max);
-          onChange([min, max]);
-        }}
-        title="Reset income filter"
-      >
-        Reset
-      </button> */}
+    <div className={isMobile ? "flex flex-col gap-2 w-full" : "flex items-center gap-2"}>
+      <div className={isMobile ? "flex items-center gap-1" : undefined}>
+        <input
+          type="number"
+          className={inputClass}
+          min={min}
+          max={max}
+          value={localMin}
+          onChange={(e) => handleInputChange(e, "min")}
+          onBlur={() => handleBlur("min")}
+          placeholder="Min"
+          inputMode="numeric"
+        />
+        <span className="text-xs text-gray-400">{isMobile ? "to" : "—"}</span>
+        <input
+          type="number"
+          className={inputClass}
+          min={min}
+          max={max}
+          value={localMax}
+          onChange={(e) => handleInputChange(e, "max")}
+          onBlur={() => handleBlur("max")}
+          placeholder="Max"
+          inputMode="numeric"
+        />
+      </div>
     </div>
   );
 }

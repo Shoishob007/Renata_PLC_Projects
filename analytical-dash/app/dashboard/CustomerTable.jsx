@@ -45,8 +45,7 @@ export default function CustomersTable({ user }) {
   const [dialogType, setDialogType] = useState("add");
   const [customerForm, setCustomerForm] = useState(emptyCustomer);
 
-    const [filtersOpen, setFiltersOpen] = useState(false);
-
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     fetchCustomers();
@@ -159,8 +158,9 @@ export default function CustomersTable({ user }) {
         setFiltersOpen={setFiltersOpen}
       />
 
+      <div className="overflow-x-auto rounded-xl bg-white">
+        <h2 className="text-2xl font-bold mb-4">Customers</h2>
 
-      <div className="overflow-x-auto rounded-xl shadow bg-white">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-100">
             <tr>
