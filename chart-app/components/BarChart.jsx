@@ -24,6 +24,7 @@ ChartJS.register(
 
 export const BarChart = () => {
   const [data, setData] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     fetch(
@@ -45,6 +46,16 @@ export const BarChart = () => {
       });
   }, []);
 
+  // Responsive: detect mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const getBarColor = (totalValue) => {
     if (totalValue < 8) return "#f9e4d2";
     if (totalValue < 16) return "#f5d7af";
@@ -63,7 +74,9 @@ export const BarChart = () => {
         data: data.map((item) => item.totalSales),
         backgroundColor: data.map((item) => getBarColor(item.totalValue)),
         borderWidth: 0,
-        barThickness: 80,
+        barThickness: isMobile ? 26 : 56, // much narrower on mobile!
+        maxBarThickness: isMobile ? 28 : 56,
+        minBarLength: 2,
       },
     ],
   };
@@ -110,17 +123,20 @@ export const BarChart = () => {
         },
         ticks: {
           stepSize: 2,
-          padding: 10,
+          padding: isMobile ? 2 : 10,
+          font: {
+            size: isMobile ? 10 : 11,
+          },
         },
         title: {
           display: true,
           text: "Total Sales",
           color: "#666",
           font: {
-            size: 12,
+            size: 11,
           },
           padding: {
-            bottom: 10,
+            bottom: isMobile ? 2 : 10,
           },
         },
         max: 14.5,
@@ -137,32 +153,41 @@ export const BarChart = () => {
           text: "Product",
           color: "#666",
           font: {
-            size: 12,
+            size: 11,
           },
           padding: {
-            top: 10,
+            top: isMobile ? 2 : 10,
           },
+        },
+        ticks: {
+          font: {
+            size: isMobile ? 10 : 11,
+          },
+          padding: isMobile ? 2 : 8,
         },
       },
     },
     layout: {
       padding: {
-        right: 50,
+        right: isMobile ? 10 : 22,
+        left: isMobile ? 0 : 4,
+        top: isMobile ? 0 : 0,
+        bottom: isMobile ? 0 : 0,
       },
     },
   };
 
-  // loading state while data is being fetched
+  // loading state
   if (data.length === 0) {
-    return <div className="text-center p-4">Loading bar chart data...</div>;
+    return <div className="text-center p-2">Loading bar chart data...</div>;
   }
 
   return (
-    <div className="relative w-full h-full px-2">
-      <Bar data={chartData} options={options} className="px-10" />
+    <div className="relative w-full h-60 sm:h-80 px-0">
+      <Bar data={chartData} options={options} className="px-0" />
 
-      {/*color based scale indicator*/}
-      <div className="absolute right-4 top-6 bottom-16 w-2 rounded">
+      {/* Color scale indicator*/}
+      <div className="absolute right-2 top-6 bottom-16 w-2 rounded hidden sm:block">
         <div
           className="h-full w-full"
           style={{
@@ -206,7 +231,7 @@ export const BarChart = () => {
         >
           0
         </div>
-        <span className="absolute right-2 top-1/2 -rotate-90 text-xs text-gray-500 whitespace-nowrap">
+        <span className="absolute -right-1 top-1/2 -rotate-90 text-xs text-gray-500 whitespace-nowrap">
           Total Value
         </span>
       </div>
