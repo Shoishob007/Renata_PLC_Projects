@@ -29,7 +29,7 @@ export default function DashboardPage() {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <h2 className="text-2xl font-bold my-2">Customers</h2>
+      <h2 className="text-2xl font-bold">Customers</h2>
       <CustomersTable user={user} />
     </div>
   );

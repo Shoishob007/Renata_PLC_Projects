@@ -51,7 +51,7 @@ export default function CustomerIncomeFilter({ min, max, value, onChange }) {
         onBlur={() => handleBlur("max")}
         placeholder="Max"
       />
-      <button
+      {/* <button
         className="ml-2 text-sm px-2 py-1 border rounded bg-gray-50 hover:bg-gray-100"
         type="button"
         onClick={() => {
@@ -62,7 +62,7 @@ export default function CustomerIncomeFilter({ min, max, value, onChange }) {
         title="Reset income filter"
       >
         Reset
-      </button>
+      </button> */}
     </div>
   );
 }

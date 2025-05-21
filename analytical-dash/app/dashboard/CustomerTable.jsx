@@ -16,9 +16,6 @@ import {
 } from "@/components/ui/dialog";
 import { EllipsisVertical } from "lucide-react";
 import CustomerFilters from "./filters/CustomerFilters";
-import CustomerGenderPie from "@/components/charts/CustomerGenderPie";
-import CustomerDivisionPie from "@/components/charts/CustomerDivisionPie";
-import CustomerIncomeBar from "@/components/charts/CustomerIncomeBar";
 
 const emptyCustomer = {
   id: "",
@@ -47,6 +44,9 @@ export default function CustomersTable({ user }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogType, setDialogType] = useState("add");
   const [customerForm, setCustomerForm] = useState(emptyCustomer);
+
+    const [filtersOpen, setFiltersOpen] = useState(false);
+
 
   useEffect(() => {
     fetchCustomers();
@@ -155,7 +155,10 @@ export default function CustomersTable({ user }) {
         incomeMax={incomeMax}
         incomeRange={incomeRange}
         setIncomeRange={setIncomeRange}
+        filtersOpen={filtersOpen}
+        setFiltersOpen={setFiltersOpen}
       />
+
 
       <div className="overflow-x-auto rounded-xl shadow bg-white">
         <table className="min-w-full divide-y divide-gray-200">
