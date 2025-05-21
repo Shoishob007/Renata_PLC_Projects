@@ -15,6 +15,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { EllipsisVertical } from "lucide-react";
+import CustomerFilters from "./filters/CustomerFilters";
 
 const emptyCustomer = {
   id: "",
@@ -28,7 +29,17 @@ const emptyCustomer = {
 
 export default function CustomersTable({ user }) {
   const [customers, setCustomers] = useState([]);
+  const [filtered, setFiltered] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [sortName, setSortName] = useState("az");
+  const [division, setDivision] = useState("all");
+  const [gender, setGender] = useState("all");
+  const [incomeRange, setIncomeRange] = useState([0, 1000000]);
+  const [incomeMin, setIncomeMin] = useState(0);
+  const [incomeMax, setIncomeMax] = useState(1000000);
+
+  const [allDivisions, setAllDivisions] = useState([]);
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogType, setDialogType] = useState("add");
@@ -45,8 +56,42 @@ export default function CustomersTable({ user }) {
       .then((data) => {
         setCustomers(data);
         setLoading(false);
+
+        // division filter
+        const divisions = Array.from(
+          new Set(data.map((c) => c.division).filter(Boolean))
+        );
+        setAllDivisions(divisions);
+
+        // income
+        const incomes = data.map((c) => Number(c.income));
+        const min = Math.min(...incomes, 0);
+        const max = Math.max(...incomes, 1000000);
+        setIncomeMin(min);
+        setIncomeMax(max);
+        setIncomeRange([min, max]);
       });
   }
+
+  useEffect(() => {
+    let arr = [...customers];
+    if (division !== "all") arr = arr.filter((c) => c.division === division);
+    if (gender !== "all") arr = arr.filter((c) => c.gender === gender);
+    arr = arr.filter(
+      (c) =>
+        Number(c.income) >= incomeRange[0] && Number(c.income) <= incomeRange[1]
+    );
+
+    //sort
+    arr.sort((a, b) => {
+      if (sortName === "az") {
+        return a.name.localeCompare(b.name);
+      } else {
+        return b.name.localeCompare(a.name);
+      }
+    });
+    setFiltered(arr);
+  }, [customers, sortName, division, gender, incomeRange]);
 
   function handleOpenAdd() {
     setDialogType("add");
@@ -94,6 +139,21 @@ export default function CustomersTable({ user }) {
 
   return (
     <div className="relative">
+      {/* Filters */}
+      <CustomerFilters
+        sortName={sortName}
+        setSortName={setSortName}
+        division={division}
+        setDivision={setDivision}
+        allDivisions={allDivisions}
+        gender={gender}
+        setGender={setGender}
+        incomeMin={incomeMin}
+        incomeMax={incomeMax}
+        incomeRange={incomeRange}
+        setIncomeRange={setIncomeRange}
+      />
+
       <div className="overflow-x-auto rounded-xl shadow bg-white">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-100">
@@ -127,7 +187,7 @@ export default function CustomersTable({ user }) {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {customers.map((customer) => (
+            {filtered.map((customer) => (
               <tr
                 key={customer.id}
                 className="hover:bg-gray-50 transition-colors"
