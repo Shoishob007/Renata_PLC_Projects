@@ -4,6 +4,14 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+  SelectGroup,
+} from "@/components/ui/select";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -114,7 +122,7 @@ export default function RegisterPage() {
                 type="email"
                 autoComplete="email"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-1 focus:ring-blue-500 focus:border-blue-500"
                 value={formData.email}
                 onChange={handleChange}
               />
@@ -132,7 +140,7 @@ export default function RegisterPage() {
                 name="name"
                 type="text"
                 autoComplete="name"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-1 focus:ring-blue-500 focus:border-blue-500"
                 value={formData.name}
                 onChange={handleChange}
               />
@@ -152,7 +160,7 @@ export default function RegisterPage() {
                 autoComplete="new-password"
                 required
                 minLength={6}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-1 focus:ring-blue-500 focus:border-blue-500"
                 value={formData.password}
                 onChange={handleChange}
               />
@@ -171,7 +179,7 @@ export default function RegisterPage() {
                 type="password"
                 autoComplete="new-password"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-1 focus:ring-blue-500 focus:border-blue-500"
                 value={formData.confirmPassword}
                 onChange={handleChange}
               />
@@ -180,24 +188,37 @@ export default function RegisterPage() {
             <div>
               <label
                 htmlFor="role_id"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 mb-1"
               >
                 Role
               </label>
-              <select
-                id="role_id"
-                name="role_id"
-                className="mt-1 block w-full"
+              <Select
                 value={formData.role_id}
-                onChange={handleChange}
+                onValueChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    role_id: value,
+                  }))
+                }
+                name="role_id"
                 required
               >
-                {roles.map((role) => (
-                  <option key={role.id} value={role.id}>
-                    {role.name}
-                  </option>
-                ))}
-              </select>
+                <SelectTrigger
+                  id="role_id"
+                  className="w-full shadow-sm focus-visible:ring-1 focus-visible:ring-blue-500"
+                >
+                  <SelectValue placeholder="Select role" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {roles.map((role) => (
+                      <SelectItem key={role.id} value={String(role.id)}>
+                        {role.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
@@ -205,7 +226,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
+              className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-1 focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
                 loading ? "opacity-50 cursor-not-allowed" : ""
               }`}
             >
