@@ -16,6 +16,9 @@ import {
 } from "@/components/ui/dialog";
 import { EllipsisVertical } from "lucide-react";
 import CustomerFilters from "./filters/CustomerFilters";
+import CustomerGenderPie from "@/components/charts/CustomerGenderPie";
+import CustomerDivisionPie from "@/components/charts/CustomerDivisionPie";
+import CustomerIncomeBar from "@/components/charts/CustomerIncomeBar";
 
 const emptyCustomer = {
   id: "",

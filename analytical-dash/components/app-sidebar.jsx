@@ -14,13 +14,12 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
-import { useAuth } from "@/context/AuthContext";
 
 export function AppSidebar({user}) {
   const navMain = [
     {
       title: "Charts",
-      url: "#",
+      url: "/charts",
       icon: ChartArea,
     },
     ...(user.role === "admin" || user.role === "sales"
